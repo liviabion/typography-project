@@ -20,12 +20,8 @@ function preload() {
 function setup() {
   createCanvas(600, 600);
   textSize(32);
-  for (let i = 0; i < numWords; i++) {
-    let word = new Word(random(width), random(height), `Word${i+1}`);
-    words.push(word);
-  }
   fontInput = createInput();
-  fontInput.position(70, 15);
+  fontInput.position(200, 20);
   fontInput.size(200);
   fontInput.hide(); // Initially hide the input
 }
@@ -35,14 +31,10 @@ function draw() {
 
   if (currentScreen === 'menu') {
     drawMenu();
-  } else if (currentScreen === 'words') {
-    drawWords();
   } else if (currentScreen === 'fonts') {
     drawFonts();
   } else if (currentScreen === 'fontDetail') {
     drawFontDetail();
-  } else if (currentScreen === 'detail') {
-    drawDetail();
   }
 }
 
@@ -52,13 +44,6 @@ function drawMenu() {
   textSize(64);
   fill(0);
   text('Menu Principal', width / 2, height / 4);
-
-  // Botão Palavras
-  fill(100);
-  rect(width / 2 - 100, height / 2 - 60, 200, 50);
-  fill(255);
-  textSize(32);
-  text('Palavras', width / 2, height / 2 - 35);
 
   // Botão Fontes
   fill(100);
@@ -117,22 +102,6 @@ function drawFontDetail() {
   text('Voltar', width / 2, height / 2 + 115);
 }
 
-function drawDetail() {
-  drawHeader("Detalhe");
-
-  background(200);
-  fill(0);
-  textSize(64);
-  textAlign(CENTER, CENTER);
-  text(selectedWord.text, width / 2, height / 2 - 50);
-
-  // Desenhar botão de voltar
-  fill(100);
-  rect(width / 2 - 50, height / 2 + 20, 100, 50);
-  fill(255);
-  textSize(32);
-  text('Voltar', width / 2, height / 2 + 45);
-}
 
 function drawHeader(title) {
   // Cabeçalho
@@ -151,41 +120,26 @@ function drawHeader(title) {
 function mousePressed() {
   if (currentScreen === 'menu') {
     if (mouseX > width / 2 - 100 && mouseX < width / 2 + 100) {
-      if (mouseY > height / 2 - 60 && mouseY < height / 2 - 10) {
-        currentScreen = 'words';
-      } else if (mouseY > height / 2 + 20 && mouseY < height / 2 + 70) {
+      if (mouseY > height / 2 + 20 && mouseY < height / 2 + 70) {
         currentScreen = 'fonts';
         fontInput.show(); // Show input when entering the fonts screen
       }
     }
-  } else if (currentScreen === 'words' || currentScreen === 'fonts') {
+  } else if (currentScreen === 'fonts') {
     if (mouseX > 0 && mouseX < 60 && mouseY > 0 && mouseY < 60) {
       currentScreen = 'menu';
       fontInput.hide(); // Hide input when leaving the fonts screen
-    } else if (currentScreen === 'words') {
-      for (let word of words) {
-        let wordWidth = textWidth(word.text);
-        if (mouseX > word.x && mouseX < word.x + wordWidth && mouseY > word.y - 32 && mouseY < word.y) {
-          selectedWord = word;
-          currentScreen = 'detail';
-          break;
-        }
-      }
     } else if (currentScreen === 'fonts') {
       for (let word of fontWords) {
         let wordWidth = textWidth(word.text);
         if (mouseX > word.x && mouseX < word.x + wordWidth && mouseY > word.y - 32 && mouseY < word.y) {
           displayFont = word.font;
           currentScreen = 'fontDetail';
+          fontInput.hide(); // Hide input when leaving the fonts screen
+
           break;
         }
       }
-    }
-  } else if (currentScreen === 'detail') {
-    if (mouseX > width / 2 - 50 && mouseX < width / 2 + 50 && mouseY > height / 2 + 20 && mouseY < height / 2 + 70) {
-      currentScreen = 'words';
-    } else if (mouseX > 0 && mouseX < 60 && mouseY > 0 && mouseY < 60) {
-      currentScreen = 'menu';
     }
   } else if (currentScreen === 'fontDetail') {
     if (mouseX > width / 2 - 50 && mouseX < width / 2 + 50 && mouseY > height / 2 + 80 && mouseY < height / 2 + 130) {
