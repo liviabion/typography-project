@@ -43,7 +43,7 @@ function drawFonts() {
     fontWord = fontInput.value();
     fontWords = [];
     for (let i = 0; i < fonts.length; i++) {
-      let word = new Word(random(width), random(height), fontWord, fonts[i]);
+      let word = new Word(random(width), random(height+60), fontWord, fonts[i]);
       fontWords.push(word);
     }
   }
@@ -131,13 +131,13 @@ class Word {
     if (this.x < 0 || this.x + wordWidth > width) {
       this.xSpeed *= -1;
     }
-    if (this.y < 32 || this.y > height) {
+    if (this.y < 60 || this.y > height) {
       this.ySpeed *= -1;
     }
   }
 
   display() {
-    fill(0);
+    fill(230,20,100);
     textFont(this.font);
     text(this.text, this.x, this.y);
   }
