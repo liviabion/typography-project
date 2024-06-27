@@ -1,6 +1,5 @@
 let words = [];
-let numWords = 15;
-let currentScreen = 'menu';
+let currentScreen = 'fonts';
 let selectedWord = null;
 let fontInput;
 let fontWord = "";
@@ -9,11 +8,11 @@ let fontWords = [];
 let displayFont = null;
 
 function preload() {
-  fonts = [
-    'Georgia', 'Times New Roman', 'Arial', 'Verdana', 'Courier New', 
-    'Comic Sans MS', 'Impact', 'Lucida Console', 'Palatino', 
-    'Trebuchet MS', 'Arial Black', 'Tahoma', 'Book Antiqua', 
-    'Lucida Sans Unicode', 'Helvetica'
+
+  fonts = [ 
+    "Potta One", "Lilita One", "Playwrite MX", "Oi", "Monofett", 
+    "Dancing Script", "Rock Salt", "UnifrakturMaguntia","League Script","Bebas Neue",
+    'Times New Roman', 'Arial', 'Helvetica', 'Courier New', 'Comic Sans MS'
   ];
 }
 
@@ -23,46 +22,21 @@ function setup() {
   fontInput = createInput();
   fontInput.position(200, 20);
   fontInput.size(200);
-  fontInput.hide(); // Initially hide the input
 }
 
 function draw() {
   background(255);
 
-  if (currentScreen === 'menu') {
-    drawMenu();
-  } else if (currentScreen === 'fonts') {
+  if (currentScreen === 'fonts') {
     drawFonts();
   } else if (currentScreen === 'fontDetail') {
     drawFontDetail();
   }
 }
 
-function drawMenu() {
-  background(200);
-  textAlign(CENTER, CENTER);
-  textSize(64);
-  fill(0);
-  text('Menu Principal', width / 2, height / 4);
-
-  // Botão Fontes
-  fill(100);
-  rect(width / 2 - 100, height / 2 + 20, 200, 50);
-  fill(255);
-  textSize(32);
-  text('Fontes', width / 2, height / 2 + 45);
-}
-
-function drawWords() {
-  drawHeader("Palavras");
-
-  for (let word of words) {
-    word.move();
-    word.display();
-  }
-}
-
 function drawFonts() {
+
+  textFont('Georgia');
   drawHeader("Fontes");
 
   if (fontWord !== fontInput.value()) {
@@ -92,13 +66,15 @@ function drawFontDetail() {
 
   fill(0);
   textSize(32);
-  text(`Fonte: ${displayFont}`, width / 2, height / 2 + 50);
+  textFont('Georgia');
+  text(`Fonte: "${displayFont}"`, width / 2, height / 2 + 50);
 
   // Botão de voltar para a tela de fontes
   fill(100);
   rect(width / 2 - 50, height / 2 + 80, 100, 50);
   fill(255);
   textSize(32);
+  textFont('Georgia')
   text('Voltar', width / 2, height / 2 + 115);
 }
 
@@ -112,24 +88,11 @@ function drawHeader(title) {
   textSize(32);
   text(title, 60, 30);
 
-  // Setinha de voltar
-  fill(255);
-  triangle(20, 20, 40, 30, 20, 40);
 }
 
 function mousePressed() {
-  if (currentScreen === 'menu') {
-    if (mouseX > width / 2 - 100 && mouseX < width / 2 + 100) {
-      if (mouseY > height / 2 + 20 && mouseY < height / 2 + 70) {
-        currentScreen = 'fonts';
-        fontInput.show(); // Show input when entering the fonts screen
-      }
-    }
-  } else if (currentScreen === 'fonts') {
-    if (mouseX > 0 && mouseX < 60 && mouseY > 0 && mouseY < 60) {
-      currentScreen = 'menu';
-      fontInput.hide(); // Hide input when leaving the fonts screen
-    } else if (currentScreen === 'fonts') {
+   if (currentScreen === 'fonts') {
+     if (currentScreen === 'fonts') {
       for (let word of fontWords) {
         let wordWidth = textWidth(word.text);
         if (mouseX > word.x && mouseX < word.x + wordWidth && mouseY > word.y - 32 && mouseY < word.y) {
@@ -143,11 +106,9 @@ function mousePressed() {
     }
   } else if (currentScreen === 'fontDetail') {
     if (mouseX > width / 2 - 50 && mouseX < width / 2 + 50 && mouseY > height / 2 + 80 && mouseY < height / 2 + 130) {
+      fontInput.show(); // Show input when entering the fonts screen
       currentScreen = 'fonts';
-    } else if (mouseX > 0 && mouseX < 60 && mouseY > 0 && mouseY < 60) {
-      currentScreen = 'menu';
-      fontInput.hide(); // Hide input when going back to menu
-    }
+    } 
   }
 }
 
